@@ -20,6 +20,7 @@ def find_words_in_websites(websites_df, words_to_check, input_csv_file):
             if index%10 == 0:
                 percentage_completion = ((index*100)//total_websites)
                 print(".............percent completed:  ", percentage_completion)
+            print('')
             continue
 
         try:
@@ -38,7 +39,8 @@ def find_words_in_websites(websites_df, words_to_check, input_csv_file):
 
         except requests.exceptions.RequestException as e:
             print(f"Error accessing {site}")
-            websites_df.at[index, new_column_name] = False
+            websites_df.at[index, new_column_name] = 'Invalid Website'
+            websites_df.at[index, 'checked'] = True
         
         if index%10 == 0:
             percentage_completion = ((index*100)//total_websites)
