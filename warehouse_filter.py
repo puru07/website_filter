@@ -20,7 +20,6 @@ def find_words_in_websites(websites_df, words_to_check, input_csv_file):
             if index%10 == 0:
                 percentage_completion = ((index*100)//total_websites)
                 print(".............percent completed:  ", percentage_completion)
-            print('')
             continue
 
         try:
@@ -30,9 +29,9 @@ def find_words_in_websites(websites_df, words_to_check, input_csv_file):
             # Check if any of the words in the list are present in the HTML content
             if any(word.lower() in soup.get_text().lower() for word in words_to_check):
                 websites_with_words.append(site)
-                websites_df.at[index, new_column_name] = True
+                websites_df.at[index, new_column_name] = 'True'
             else:
-                websites_df.at[index, new_column_name] = False
+                websites_df.at[index, new_column_name] = 'False'
 
             # Mark the website as checked
             websites_df.at[index, 'checked'] = True
