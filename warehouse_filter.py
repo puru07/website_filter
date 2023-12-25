@@ -14,7 +14,16 @@ def find_words_in_websites(websites_df, words_to_check, input_csv_file):
 
     for index, row in websites_df.iterrows():
         site = row['Website']
+
+        checked_websites = set()
         
+        # skip dublicate websites
+        if site in checked_websites:
+            print('duplicate for {site} found')
+            if index%10 == 0:
+                percentage_completion = ((index*100)//total_websites)
+                print(".............percent completed:  ", percentage_completion)
+            continue
         # Skip websites that have already been checked
         if row.get('checked') == True:
             if index%10 == 0:
@@ -34,11 +43,14 @@ def find_words_in_websites(websites_df, words_to_check, input_csv_file):
                 websites_df.at[index, new_column_name] = 'False'
 
             # Mark the website as checked
+            checked_websites.add(site)
             websites_df.at[index, 'checked'] = True
 
         except requests.exceptions.RequestException as e:
             print(f"Error accessing {site}")
             websites_df.at[index, new_column_name] = 'Invalid Website'
+            # Mark the website as checked
+            checked_websites.add(site)
             websites_df.at[index, 'checked'] = True
         
         if index%10 == 0:
